@@ -1,12 +1,18 @@
 import streamlit as st
 import json
 import os
+import sys
+
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+if BASE_DIR not in sys.path:
+    sys.path.append(BASE_DIR)
+
 from rss_collector import collect_news
 from ai_analyzer import run_ai_analysis
 
 st.set_page_config(page_title="Admin - AI Newsroom", layout="wide")
 
-DATA_DIR = os.path.join(os.path.dirname(__file__), "data")
+DATA_DIR = os.path.join(BASE_DIR, "data")
 FEEDS_FILE = os.path.join(DATA_DIR, "feeds.json")
 RAW_NEWS_FILE = os.path.join(DATA_DIR, "raw_news.json")
 VISITORS_FILE = os.path.join(DATA_DIR, "visitors.json")
