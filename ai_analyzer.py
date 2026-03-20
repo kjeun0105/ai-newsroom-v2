@@ -11,16 +11,15 @@ REPORTS_DIR = os.path.join(DATA_DIR, "reports")
 import dotenv
 dotenv.load_dotenv(os.path.join(os.path.dirname(os.path.dirname(__file__)), '.env'))
 # Try to get from st.secrets first, but allow standalone execution
-api_key = os.environ.get("GEMINI_API_KEY")
-try:
-    import streamlit as st
-    if "GEMINI_API_KEY" in st.secrets:
-        api_key = st.secrets["GEMINI_API_KEY"]
-except Exception:
-    pass
-
-if not api_key:
-    print("Warning: No GEMINI_API_KEY found.")
+def get_api_key():
+    api_key = os.environ.get("GEMINI_API_KEY")
+    try:
+        import streamlit as st
+        if "GEMINI_API_KEY" in st.secrets:
+            api_key = st.secrets["GEMINI_API_KEY"]
+    except Exception:
+        pass
+    return api_key
 
 def load_json(filepath, default_val):
     if not os.path.exists(filepath):
@@ -69,6 +68,7 @@ Raw news data:
 {json.dumps(raw_news, ensure_ascii=False)}
 """
 
+    api_key = get_api_key()
     if not api_key:
         raise RuntimeError("GEMINI_API_KEY is not set.")
     
