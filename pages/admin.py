@@ -32,6 +32,10 @@ def save_json(filepath, data):
         json.dump(data, f, ensure_ascii=False, indent=2)
 
 def check_password():
+    if "ADMIN_PASSWORD" not in st.secrets:
+        st.error("⚠️ Streamlit Cloud 환경 설정에서 `ADMIN_PASSWORD` 시크릿이 설정되지 않았습니다. 앱 설정에서 Secrets를 추가해주세요.")
+        st.stop()
+
     def password_entered():
         if st.session_state["password"] == st.secrets["ADMIN_PASSWORD"]:
             st.session_state["password_correct"] = True
